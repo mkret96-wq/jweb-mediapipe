@@ -73,11 +73,6 @@ const hands = new Hands({locateFile: (file) => {
 }});
 hands.onResults(onResultsHands);
 
-const camera = new Camera(video, {
-  onFrame: async () => {
-    await hands.send({image: video});
-  },
-  width: 640,
-  height: 480
+window.max.bindInlet('process_frame', async function () {
+  await hands.send({image: video});
 });
-camera.start();
