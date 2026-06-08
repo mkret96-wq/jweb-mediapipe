@@ -73,11 +73,50 @@ const hands = new Hands({locateFile: (file) => {
 }});
 hands.onResults(onResultsHands);
 
-const camera = new Camera(video, {
-  onFrame: async () => {
-    await hands.send({image: video});
-  },
-  width: 640,
-  height: 480
-});
-camera.start();
+async function startCamera() {
+
+  const devices =
+    await navigator.mediaDevices.enumerateDevices();
+
+  const obsCam =
+    devices.find(
+      d =>
+      d.kind === "videoinput" &&
+      d.label.includes("OBS")
+    );
+
+  const stream =
+    await navigator.mediaDevices.getUserMedia({
+
+      video: {
+        deviceId: obsCam.deviceId
+      }
+
+    });
+
+  video.srcObject = stream;
+
+  video.onloadedmetadata =
+  async () => {
+
+      video.play();
+
+      async function processFrame() {
+
+          await hands.send({
+              image: video
+          });
+
+          requestAnimationFrame(
+            processFrame
+          );
+
+      }
+
+      processFrame();
+
+  };
+
+}
+
+startCamera();
