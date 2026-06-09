@@ -10,10 +10,22 @@
         <link rel="stylesheet" href="css/mesh-style.css">
     </head>
     <body>
-		<div id="container">
-			<video id="videoel" width="640" height="480" style="display: none;"></video>
-			<canvas id="overlay" width="640" height="480"></canvas>
-		</div>
-        <script src="./js/handpose.js"></script>
-    </body>
-</html>
+		<div id="container" style="display:flex;">
+
+    <canvas id="rawcanvas"
+            width="640"
+            height="480">
+    </canvas>
+
+    <canvas id="overlay"
+            width="640"
+            height="480">
+    </canvas>
+
+    <video id="videoel"
+           width="640"
+           height="480"
+           style="display:none;">
+    </video>
+
+</div>
