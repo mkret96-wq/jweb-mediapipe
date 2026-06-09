@@ -1,4 +1,8 @@
 const video = document.getElementById('videoel');
+
+const rawcanvas = document.getElementById('rawcanvas');
+const rawctx = rawcanvas.getContext('2d');
+
 const overlay = document.getElementById('overlay');
 const canvas = overlay.getContext('2d');
 
@@ -27,11 +31,32 @@ window.max.bindInlet('draw_hands', function (enable) {
 
 function onResultsHands(results) {
 
+  // 左边原始画面
+  rawctx.drawImage(
+    results.image,
+    0,
+    0,
+    rawcanvas.width,
+    rawcanvas.height
+  );
+
   canvas.save();
-  canvas.clearRect(0, 0, overlay.width, overlay.height);
-  
+  canvas.clearRect(
+    0,
+    0,
+    overlay.width,
+    overlay.height
+  );
+
+  // 右边MediaPipe画面
   if(drawImage) {
-    canvas.drawImage(results.image, 0, 0, overlay.width, overlay.height);
+    canvas.drawImage(
+      results.image,
+      0,
+      0,
+      overlay.width,
+      overlay.height
+    );
   }
   
   if (results.multiHandLandmarks && results.multiHandedness) {
